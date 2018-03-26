@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Lab3WebMvc.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Lab3WebMvc
 {
@@ -19,8 +21,10 @@ namespace Lab3WebMvc
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        // Middleware - An instance of CinemaContext will be sent to Controller Constructor!
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<CinemaContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc();
         }
 
