@@ -7,7 +7,7 @@ namespace Lab3WebMvc.Models
     public class Visitor
     {
         [Key]
-        public int Id { get; set; }
+        public int VisitorId { get; set; }
         public string Name { get; set; }
         public virtual IList<Ticket> Tickets { get; set; }
     }
