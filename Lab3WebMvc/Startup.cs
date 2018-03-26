@@ -24,7 +24,7 @@ namespace Lab3WebMvc
         // Middleware - An instance of CinemaContext will be sent to Controller Constructor!
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<CinemaContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<CinemaContext>(options => options.UseSqlServer(Configuration.GetConnectionString("connStringCinema")));
             services.AddMvc();
         }
 
