@@ -22,80 +22,73 @@ namespace Lab3WebMvc.Controllers
         // GET: Cinema
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Movies.ToListAsync());
+            var movies = _context.Movies.Include(m => m.Tickets);
+            return View(await movies.ToListAsync());
         }
 
-        // GET: Cinema/Details/5
-        public async Task<IActionResult> Details(int? id)
+        //GET: Booking
+        public async Task<IActionResult> Booking(int? id, bool? saveChangesError = false)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var movie = await _context.Movies
-                .SingleOrDefaultAsync(m => m.MovieId == id);
+            var movie = await _context.Movies.AsNoTracking().SingleOrDefaultAsync(m => m.MovieId == id);
+            
+            // didn't find any movie with that Id!
             if (movie == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            //exception handling
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewData["ErrorMessage"] = "Delete failed. Try again, and if the problem persists " +
+            "see your system administrator.";
+            }
+            return View(new Visitor());
         }
 
-        // GET: Cinema/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Cinema/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //POST: Booking
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MovieId,Title,Starting")] Movie movie)
+        public async Task<IActionResult> Booking(int id, [Bind("Name,TicketCount,Tickets")] Visitor visitor)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(movie);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(movie);
-        }
+            // EXEMPEL CSHTML HYPERLINK KOD!!!
+            // <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.LastName)</a>
 
-        // GET: Cinema/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
+            /*if (id != movie.MovieId)
             {
                 return NotFound();
-            }
+            }*/
 
-            var movie = await _context.Movies.SingleOrDefaultAsync(m => m.MovieId == id);
-            if (movie == null)
-            {
-                return NotFound();
-            }
-            return View(movie);
-        }
+            //if (ModelState.IsValid)
+            //{
 
-        // POST: Cinema/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MovieId,Title,Starting")] Movie movie)
-        {
-            if (id != movie.MovieId)
+            try
             {
-                return NotFound();
-            }
 
-            if (ModelState.IsValid)
-            {
-                try
+                    for (var i = 0; i < visitor.TicketCount; i++)
+                    {
+                        visitor.Tickets.Add(new Ticket{ MovieId = id, VisitorId = visitor.VisitorId });
+
+                    }
+                    foreach (var ticket in visitor.Tickets)
+                    {
+                        ticket.Movie.SeatsTaken += 1;
+                    }
+
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+
+                catch (DbUpdateException)
+                {
+                    //Log the error (uncomment ex variable name and write a log.)
+                    return RedirectToAction(nameof(Booking), new { id = id, saveChangesError = true });
+                }
+                /*try
                 {
                     _context.Update(movie);
                     await _context.SaveChangesAsync();
@@ -110,39 +103,11 @@ namespace Lab3WebMvc.Controllers
                     {
                         throw;
                     }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(movie);
-        }
+                }*/
+                //return RedirectToAction(nameof(Index));
 
-        // GET: Cinema/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var movie = await _context.Movies
-                .SingleOrDefaultAsync(m => m.MovieId == id);
-            if (movie == null)
-            {
-                return NotFound();
-            }
-
-            return View(movie);
-        }
-
-        // POST: Cinema/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var movie = await _context.Movies.SingleOrDefaultAsync(m => m.MovieId == id);
-            _context.Movies.Remove(movie);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            //}
+            //return View(movie);
         }
 
         private bool MovieExists(int id)

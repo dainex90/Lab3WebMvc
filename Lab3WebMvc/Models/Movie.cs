@@ -8,8 +8,10 @@ namespace Lab3WebMvc.Models
     {
         [Key]
         public int MovieId { get; set; }
+        [Required]
         public string Title { get; set;}
         public double Starting { get; set;}
+        public int SeatsTaken { get; set; }
         public virtual IList<Ticket> Tickets { get; set;}
     }
 }

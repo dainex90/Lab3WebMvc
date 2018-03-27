@@ -19,9 +19,14 @@ namespace Lab3WebMvc.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Movie>().ToTable("Movie");
-            modelBuilder.Entity<Ticket>().ToTable("Ticket");
-            modelBuilder.Entity<Visitor>().ToTable("Visitor");
+            var movieModel = modelBuilder.Entity<Movie>();
+            var ticketModel = modelBuilder.Entity<Ticket>();
+            var visitorModel = modelBuilder.Entity<Visitor>();
+
+
+            movieModel.ToTable("Movie").HasMany(m => m.Tickets).WithOne(t => t.Movie);
+            ticketModel.ToTable("Ticket");
+            visitorModel.ToTable("Visitor").HasMany(v => v.Tickets).WithOne(t => t.Visitor);
         }
     }
 }

@@ -13,7 +13,6 @@ namespace Lab3WebMvc.Models
         public int MovieId { get; set; }
         public int VisitorId { get; set;}
 
-        public int Count { get; set; }
         public Movie Movie { get; set; }
         public Visitor Visitor { get; set; }
     }

@@ -11,9 +11,10 @@ using System;
 namespace Lab3WebMvc.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    partial class CinemaContextModelSnapshot : ModelSnapshot
+    [Migration("20180327085741_addedAvailableSeats")]
+    partial class addedAvailableSeats
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,12 +26,11 @@ namespace Lab3WebMvc.Migrations
                     b.Property<int>("MovieId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("SeatsTaken");
+                    b.Property<int>("AvailableSeats");
 
                     b.Property<double>("Starting");
 
-                    b.Property<string>("Title")
-                        .IsRequired();
+                    b.Property<string>("Title");
 
                     b.HasKey("MovieId");
 
@@ -41,6 +41,8 @@ namespace Lab3WebMvc.Migrations
                 {
                     b.Property<int>("TicketId")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Count");
 
                     b.Property<int>("MovieId");
 
@@ -61,8 +63,6 @@ namespace Lab3WebMvc.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name");
-
-                    b.Property<int>("TicketCount");
 
                     b.HasKey("VisitorId");
 
