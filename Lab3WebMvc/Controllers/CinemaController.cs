@@ -68,6 +68,7 @@ namespace Lab3WebMvc.Controllers
             {
                 if (ModelState.IsValid)
                 {
+
                     var movieToBook = (from movie in _context.Movies
                                        where movie.MovieId == id
                                        select movie).Single();
@@ -80,11 +81,11 @@ namespace Lab3WebMvc.Controllers
                             // Det finns nu inga platser kvar på denna visning!
                             throw new Exception();
                         }
-                            
+                        visitor.Tickets.Add(new Ticket { MovieId = id, VisitorId = visitor.VisitorId });
                     }
-
+                    _context.Visitors.Add(visitor);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(BookingSuccess), new { id = id, visitor = visitor });
+                    return RedirectToAction(nameof(BookingSuccess), new { id = id});
                 }
             }
 
@@ -116,13 +117,18 @@ namespace Lab3WebMvc.Controllers
         }
 
         //HTTP: GET BookingSuccess
-        public IActionResult BookingSuccess(int? id, Visitor visitor)
+        public IActionResult BookingSuccess(int? id)
         {
             var bookedMovie = (from movie in _context.Movies
                                where movie.MovieId == id
                                select movie).Single();
 
-            ViewData["SuccessMessage"] = $"You successfully booked ? tickets to the movie  {bookedMovie.Title}. There are currently {50 - bookedMovie.SeatsTaken} seats left for this show!";
+            var thisCustomer = (from visitor in _context.Visitors
+                               where visitor.Tickets.First().MovieId == id
+                               select visitor).Last();
+
+
+            ViewData["SuccessMessage"] = $"You successfully booked {thisCustomer.TicketCount} tickets to the movie  {bookedMovie.Title}. There are currently {50 - bookedMovie.SeatsTaken} seats left for this show!";
             return View();
         }
 
