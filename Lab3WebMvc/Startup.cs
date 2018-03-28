@@ -47,7 +47,7 @@ namespace Lab3WebMvc
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Cinema}/{action=Index}/{id?}");
             });
         }
     }

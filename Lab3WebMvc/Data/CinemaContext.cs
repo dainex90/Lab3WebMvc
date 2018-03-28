@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Lab3WebMvc.Models;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lab3WebMvc.Data
 {
@@ -24,9 +26,18 @@ namespace Lab3WebMvc.Data
             var visitorModel = modelBuilder.Entity<Visitor>();
 
 
-            movieModel.ToTable("Movie").HasMany(m => m.Tickets).WithOne(t => t.Movie);
+            movieModel.ToTable("Movie");
             ticketModel.ToTable("Ticket");
-            visitorModel.ToTable("Visitor").HasMany(v => v.Tickets).WithOne(t => t.Visitor);
+            visitorModel.ToTable("Visitor");
+
+            ticketModel.HasOne(t => t.Movie)
+                .WithMany(m => m.Tickets);
+
+            ticketModel.HasOne(t => t.Visitor)
+                .WithMany(v => v.Tickets);
+
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

@@ -34,26 +34,28 @@ namespace Lab3WebMvc.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Movies.AsNoTracking().SingleOrDefaultAsync(m => m.MovieId == id);
-            
+            var movie = await _context.Movies
+        .Include(m => m.Tickets)
+            .ThenInclude(t => t.Visitor)
+        .AsNoTracking()
+        .SingleOrDefaultAsync(m => m.MovieId == id);
+
             // didn't find any movie with that Id!
             if (movie == null)
             {
                 return NotFound();
             }
-
             //exception handling
             if (saveChangesError.GetValueOrDefault())
             {
-                ViewData["ErrorMessage"] = "Delete failed. Try again, and if the problem persists " +
-            "see your system administrator.";
+                ViewData["ErrorMessage"] = "Booking failed, please try again!";
             }
             return View(new Visitor());
         }
 
         //POST: Booking
         [HttpPost]
-        public async Task<IActionResult> Booking(int id, [Bind("Name,TicketCount,Tickets")] Visitor visitor)
+        public async Task<IActionResult> Booking(int id, [Bind("Name,TicketCount")] Visitor visitor)
         {
             // EXEMPEL CSHTML HYPERLINK KOD!!!
             // <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.LastName)</a>
@@ -62,32 +64,35 @@ namespace Lab3WebMvc.Controllers
             {
                 return NotFound();
             }*/
-
-            //if (ModelState.IsValid)
-            //{
-
             try
             {
+                if (ModelState.IsValid)
+                {
+                    var movieToBook = (from movie in _context.Movies
+                                       where movie.MovieId == id
+                                       select movie).Single();
 
                     for (var i = 0; i < visitor.TicketCount; i++)
                     {
-                        visitor.Tickets.Add(new Ticket{ MovieId = id, VisitorId = visitor.VisitorId });
-
-                    }
-                    foreach (var ticket in visitor.Tickets)
-                    {
-                        ticket.Movie.SeatsTaken += 1;
+                        movieToBook.SeatsTaken += 1;
+                        if (movieToBook.SeatsTaken >= 50)
+                        {
+                            // Det finns nu inga platser kvar på denna visning!
+                            throw new Exception();
+                        }
+                            
                     }
 
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(BookingSuccess), new { id = id, visitor = visitor });
                 }
+            }
 
-                catch (DbUpdateException)
-                {
-                    //Log the error (uncomment ex variable name and write a log.)
-                    return RedirectToAction(nameof(Booking), new { id = id, saveChangesError = true });
-                }
+            catch (DbUpdateException)
+            {
+                //Log the error (uncomment ex variable name and write a log.)
+                return RedirectToAction(nameof(Booking), new { id = id, saveChangesError = true });
+            }
                 /*try
                 {
                     _context.Update(movie);
@@ -107,7 +112,18 @@ namespace Lab3WebMvc.Controllers
                 //return RedirectToAction(nameof(Index));
 
             //}
-            //return View(movie);
+            return View(visitor);
+        }
+
+        //HTTP: GET BookingSuccess
+        public IActionResult BookingSuccess(int? id, Visitor visitor)
+        {
+            var bookedMovie = (from movie in _context.Movies
+                               where movie.MovieId == id
+                               select movie).Single();
+
+            ViewData["SuccessMessage"] = $"You successfully booked ? tickets to the movie  {bookedMovie.Title}. There are currently {50 - bookedMovie.SeatsTaken} seats left for this show!";
+            return View();
         }
 
         private bool MovieExists(int id)
