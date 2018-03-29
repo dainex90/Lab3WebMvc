@@ -11,10 +11,9 @@ namespace Lab3WebMvc.Models
         public int MovieId { get; set; }
         [Required]
         public string Title { get; set;}
-        
+        // Datetime ??
         public double Starting { get; set;}
-
-        public int SeatsTaken { get; set; }
+        public int AvailableSeats { get; set; }
         public virtual IList<Ticket> Tickets { get; set;}
     }
 }

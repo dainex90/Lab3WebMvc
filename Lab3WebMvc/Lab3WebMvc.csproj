@@ -9,8 +9,22 @@
     <Compile Remove="Migrations\20180327155436_ks.Designer.cs" />
     <Compile Remove="Migrations\20180328132923_lala.cs" />
     <Compile Remove="Migrations\20180328132923_lala.Designer.cs" />
+    <Compile Remove="Migrations\20180328134330_addeddatetimeprop.cs" />
+    <Compile Remove="Migrations\20180328134330_addeddatetimeprop.Designer.cs" />
+    <Compile Remove="Migrations\20180328135444_fixedmodelclasses.cs" />
+    <Compile Remove="Migrations\20180328135444_fixedmodelclasses.Designer.cs" />
     <Compile Remove="Migrations\20180328142521_lol.cs" />
     <Compile Remove="Migrations\20180328142521_lol.Designer.cs" />
+    <Compile Remove="Migrations\20180328142902_la.cs" />
+    <Compile Remove="Migrations\20180328142902_la.Designer.cs" />
+    <Compile Remove="Migrations\20180329101140_Final.cs" />
+    <Compile Remove="Migrations\20180329101140_Final.Designer.cs" />
+    <Compile Remove="Migrations\20180329102225_lala.cs" />
+    <Compile Remove="Migrations\20180329102225_lala.Designer.cs" />
+    <Compile Remove="Migrations\20180329105517_oka.cs" />
+    <Compile Remove="Migrations\20180329105517_oka.Designer.cs" />
+    <Compile Remove="Migrations\20180329110703_changedtoAvailableSeats.cs" />
+    <Compile Remove="Migrations\20180329110703_changedtoAvailableSeats.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -4,7 +4,6 @@ using System;
 using System.Linq;
 using Lab3WebMvc.Data;
 
-
 namespace Lab3WebMvc.Models
 {
     public static class SeedData
@@ -25,27 +24,27 @@ namespace Lab3WebMvc.Models
                      {
                          Title = "12 Strong",
                          Starting = 17.00,
-                         SeatsTaken = 0
-
+                         AvailableSeats = 50
+    
                      },
                      new Movie
                      {
                          Title = "Tomb Raider",
                          Starting = 19.00,
-                         SeatsTaken = 0
+                         AvailableSeats = 50
 
                      },
                      new Movie
                      {
                          Title = "Pacific Rim Uprising",
                          Starting = 21.00,
-                         SeatsTaken = 0
+                         AvailableSeats = 50
                      },
                      new Movie
                      {
                          Title = "Avengers: Infinity War",
                          Starting = 23.00,
-                         SeatsTaken = 0
+                         AvailableSeats = 50
                      }
                 );
                 context.SaveChanges();

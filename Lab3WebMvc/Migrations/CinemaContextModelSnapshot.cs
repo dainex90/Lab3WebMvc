@@ -25,7 +25,7 @@ namespace Lab3WebMvc.Migrations
                     b.Property<int>("MovieId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("SeatsTaken");
+                    b.Property<int>("AvailableSeats");
 
                     b.Property<double>("Starting");
 

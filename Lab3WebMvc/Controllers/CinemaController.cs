@@ -50,12 +50,12 @@ namespace Lab3WebMvc.Controllers
             {
                 ViewData["ErrorMessage"] = "Booking failed, please try again!";
             }
-            return View(new Visitor());
+            return View(new Visitor() {  Tickets = new List<Ticket>()});
         }
 
         //POST: Booking
         [HttpPost]
-        public async Task<IActionResult> Booking(int id, [Bind("Name,TicketCount")] Visitor visitor)
+        public async Task<IActionResult> Booking(int id, [Bind("Name,TicketCount,Tickets")] Visitor visitor)
         {
             // EXEMPEL CSHTML HYPERLINK KOD!!!
             // <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.LastName)</a>
@@ -75,13 +75,13 @@ namespace Lab3WebMvc.Controllers
 
                     for (var i = 0; i < visitor.TicketCount; i++)
                     {
-                        movieToBook.SeatsTaken += 1;
-                        if (movieToBook.SeatsTaken >= 50)
+                        if (movieToBook.AvailableSeats == 0)
                         {
-                            // Det finns nu inga platser kvar på denna visning!
-                            throw new Exception();
+                            RedirectToAction(nameof(BookingError), new { id = id, numOfTickets = i});
                         }
                         visitor.Tickets.Add(new Ticket { MovieId = id, VisitorId = visitor.VisitorId });
+                        movieToBook.AvailableSeats--;
+                        
                     }
                     _context.Visitors.Add(visitor);
                     await _context.SaveChangesAsync();
@@ -127,8 +127,16 @@ namespace Lab3WebMvc.Controllers
                                where visitor.Tickets.First().MovieId == id
                                select visitor).Last();
 
+                ViewData["SuccessMessage"] = $"You successfully booked {thisCustomer.TicketCount} tickets to the movie  {bookedMovie.Title}. There are currently {bookedMovie.AvailableSeats} seats left for this show!";
 
-            ViewData["SuccessMessage"] = $"You successfully booked {thisCustomer.TicketCount} tickets to the movie  {bookedMovie.Title}. There are currently {50 - bookedMovie.SeatsTaken} seats left for this show!";
+            return View();
+        }
+
+        public IActionResult BookingError(int? id, int numOfTickets)
+        {
+
+            ViewData["ErrorMessage"] = $"There wasn't enough seats left for that order! Do you want to book the{numOfTickets} tickets that is available?";
+
             return View();
         }
 
