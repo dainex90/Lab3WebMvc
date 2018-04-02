@@ -11,7 +11,7 @@ namespace Lab3WebMvc.Models
 
         [RegularExpression(@"^[A-Z]+[a-zA-Z""'\s-]*$")]
         public string Name { get; set; }
-
+        [Display(Name = "Tickets")]
         public int TicketCount { get; set; }
         public virtual IList<Ticket> Tickets { get; set; }
     }

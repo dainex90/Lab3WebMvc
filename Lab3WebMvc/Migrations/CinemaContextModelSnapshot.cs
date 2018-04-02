@@ -27,7 +27,7 @@ namespace Lab3WebMvc.Migrations
 
                     b.Property<int>("AvailableSeats");
 
-                    b.Property<double>("Starting");
+                    b.Property<DateTime>("Starting");
 
                     b.Property<string>("Title")
                         .IsRequired();

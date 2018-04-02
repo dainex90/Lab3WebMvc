@@ -33,13 +33,12 @@ namespace Lab3WebMvc.Controllers
             {
                 return NotFound();
             }
-
             var movie = await _context.Movies
         .Include(m => m.Tickets)
             .ThenInclude(t => t.Visitor)
         .AsNoTracking()
         .SingleOrDefaultAsync(m => m.MovieId == id);
-
+            
             // didn't find any movie with that Id!
             if (movie == null)
             {
@@ -59,7 +58,7 @@ namespace Lab3WebMvc.Controllers
         {
             // EXEMPEL CSHTML HYPERLINK KOD!!!
             // <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.LastName)</a>
-
+            
             /*if (id != movie.MovieId)
             {
                 return NotFound();
@@ -68,24 +67,25 @@ namespace Lab3WebMvc.Controllers
             {
                 if (ModelState.IsValid)
                 {
-
                     var movieToBook = (from movie in _context.Movies
                                        where movie.MovieId == id
                                        select movie).Single();
 
-                    for (var i = 0; i < visitor.TicketCount; i++)
+                    if (movieToBook.AvailableSeats >= visitor.TicketCount)
                     {
-                        if (movieToBook.AvailableSeats == 0)
+                        for (var i = 0; i < visitor.TicketCount; i++)
                         {
-                            RedirectToAction(nameof(BookingError), new { id = id, numOfTickets = i});
+                            visitor.Tickets.Add(new Ticket { MovieId = id, VisitorId = visitor.VisitorId });
+                            movieToBook.AvailableSeats--;
                         }
-                        visitor.Tickets.Add(new Ticket { MovieId = id, VisitorId = visitor.VisitorId });
-                        movieToBook.AvailableSeats--;
-                        
+                        _context.Visitors.Add(visitor);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(BookingSuccess), new { id = id });
                     }
-                    _context.Visitors.Add(visitor);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(BookingSuccess), new { id = id});
+                    else
+                    {
+                        return RedirectToAction(nameof(BookingError), new { id = id });
+                    }
                 }
             }
 
@@ -132,10 +132,9 @@ namespace Lab3WebMvc.Controllers
             return View();
         }
 
-        public IActionResult BookingError(int? id, int numOfTickets)
+        public IActionResult BookingError(int? id)
         {
-
-            ViewData["ErrorMessage"] = $"There wasn't enough seats left for that order! Do you want to book the{numOfTickets} tickets that is available?";
+            ViewData["ErrorMessage"] = $"There wasn't enough seats left for that order!";
 
             return View();
         }

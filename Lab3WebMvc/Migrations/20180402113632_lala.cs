@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Lab3WebMvc.Migrations
 {
-    public partial class addmigrationfluentapisettingup : Migration
+    public partial class lala : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

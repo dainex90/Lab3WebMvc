@@ -11,8 +11,8 @@ using System;
 namespace Lab3WebMvc.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20180327085741_addedAvailableSeats")]
-    partial class addedAvailableSeats
+    [Migration("20180329120620_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,7 +30,8 @@ namespace Lab3WebMvc.Migrations
 
                     b.Property<double>("Starting");
 
-                    b.Property<string>("Title");
+                    b.Property<string>("Title")
+                        .IsRequired();
 
                     b.HasKey("MovieId");
 
@@ -41,8 +42,6 @@ namespace Lab3WebMvc.Migrations
                 {
                     b.Property<int>("TicketId")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<int>("Count");
 
                     b.Property<int>("MovieId");
 
@@ -63,6 +62,8 @@ namespace Lab3WebMvc.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name");
+
+                    b.Property<int>("TicketCount");
 
                     b.HasKey("VisitorId");
 

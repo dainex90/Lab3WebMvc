@@ -4,22 +4,24 @@ using System.Collections.Generic;
 
 namespace Lab3WebMvc.Migrations
 {
-    public partial class dasdsad : Migration
+    public partial class addeddatetime : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "SeatsTaken",
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "Starting",
                 table: "Movie",
-                newName: "AvailableSeats");
+                nullable: false,
+                oldClrType: typeof(double));
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "AvailableSeats",
+            migrationBuilder.AlterColumn<double>(
+                name: "Starting",
                 table: "Movie",
-                newName: "SeatsTaken");
+                nullable: false,
+                oldClrType: typeof(DateTime));
         }
     }
 }

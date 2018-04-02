@@ -15,8 +15,9 @@ namespace Lab3WebMvc.Migrations
                 {
                     MovieId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    AvailableSeats = table.Column<int>(nullable: false),
                     Starting = table.Column<double>(nullable: false),
-                    Title = table.Column<string>(nullable: true)
+                    Title = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,7 +30,8 @@ namespace Lab3WebMvc.Migrations
                 {
                     VisitorId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    TicketCount = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,7 +44,6 @@ namespace Lab3WebMvc.Migrations
                 {
                     TicketId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Count = table.Column<int>(nullable: false),
                     MovieId = table.Column<int>(nullable: false),
                     VisitorId = table.Column<int>(nullable: false)
                 },

@@ -11,8 +11,8 @@ using System;
 namespace Lab3WebMvc.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20180327163457_fix2")]
-    partial class fix2
+    [Migration("20180402062624_tryfixdatetime")]
+    partial class tryfixdatetime
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,9 +26,9 @@ namespace Lab3WebMvc.Migrations
                     b.Property<int>("MovieId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("SeatsTaken");
+                    b.Property<int>("AvailableSeats");
 
-                    b.Property<double>("Starting");
+                    b.Property<DateTime>("Starting");
 
                     b.Property<string>("Title")
                         .IsRequired();

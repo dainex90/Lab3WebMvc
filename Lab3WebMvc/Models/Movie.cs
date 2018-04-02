@@ -11,8 +11,12 @@ namespace Lab3WebMvc.Models
         public int MovieId { get; set; }
         [Required]
         public string Title { get; set;}
-        // Datetime ??
-        public double Starting { get; set;}
+
+        [Required(ErrorMessage = "Enter the issued date.")]
+        [DataType(DataType.Date)]
+        public DateTime Starting { get; set;}
+
+        [Display(Name = "Available Seats")]
         public int AvailableSeats { get; set; }
         public virtual IList<Ticket> Tickets { get; set;}
     }

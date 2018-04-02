@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Lab3WebMvc.Migrations
 {
-    public partial class fix2 : Migration
+    public partial class addedvisibilityannotations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

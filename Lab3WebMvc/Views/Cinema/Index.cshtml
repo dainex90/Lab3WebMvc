@@ -26,7 +26,8 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        
+        <tr class="@(item.AvailableSeats > 0 ? "White" : "Red")">
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
@@ -34,10 +35,19 @@
                 @Html.DisplayFor(modelItem => item.Starting)
             </td>
             <td>
-                @Html.DisplayFor(modelitem => item.AvailableSeats)
+                <!--@Html.DisplayFor(modelitem => item.AvailableSeats)-->
+                @Html.TextBoxFor(m => item.AvailableSeats, "{0:dd/MM/yyyy}")
+                @Html.ValidationMessageFor(model => item.AvailableSeats)
             </td>
             <td>
+                @if (item.AvailableSeats <= 0)
+                {
+                <strong id="ticketsEmpty" class="TicketStatus">Sold Out!</strong>
+                }
+                else
+                {
                 <a asp-action="Booking" asp-route-id="@item.MovieId">Book Now!</a>
+                }
             </td>
         </tr>
 }

@@ -11,8 +11,8 @@ using System;
 namespace Lab3WebMvc.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20180329111006_dasdsad")]
-    partial class dasdsad
+    [Migration("20180330074044_addedvisibilityannotations")]
+    partial class addedvisibilityannotations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

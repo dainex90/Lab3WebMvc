@@ -11,8 +11,8 @@ using System;
 namespace Lab3WebMvc.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20180327075216_add-migration fluentapi-setting-up")]
-    partial class addmigrationfluentapisettingup
+    [Migration("20180330084412_addeddatetime")]
+    partial class addeddatetime
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,9 +26,12 @@ namespace Lab3WebMvc.Migrations
                     b.Property<int>("MovieId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<double>("Starting");
+                    b.Property<int>("AvailableSeats");
 
-                    b.Property<string>("Title");
+                    b.Property<DateTime>("Starting");
+
+                    b.Property<string>("Title")
+                        .IsRequired();
 
                     b.HasKey("MovieId");
 
@@ -39,8 +42,6 @@ namespace Lab3WebMvc.Migrations
                 {
                     b.Property<int>("TicketId")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<int>("Count");
 
                     b.Property<int>("MovieId");
 
@@ -61,6 +62,8 @@ namespace Lab3WebMvc.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name");
+
+                    b.Property<int>("TicketCount");
 
                     b.HasKey("VisitorId");
 
